@@ -12,7 +12,9 @@ class Shiporder extends Model
     public static function verifyStructure($array_structure){
 
 
-        if (array_key_exists("shiporder",$array_structure)) {
+        if (array_key_exists("orderid",$array_structure["shiporder"])) {
+            return Shiporder::verifyData($array_structure["shiporder"]);
+        } else {            
             foreach ($array_structure['shiporder'] as $data) {
                 $status_data = Shiporder::verifyData($data);
                 if (!$status_data) {
@@ -20,13 +22,14 @@ class Shiporder extends Model
                 }
             }
             return true;
-        } else {
-            return false;
         }
         
+        return false;
+
     }    
 
     public static function verifyData($array_data){
+
 
         if (!array_key_exists("orderid",$array_data)) {
             return false;
@@ -56,9 +59,39 @@ class Shiporder extends Model
         if (!array_key_exists("items",$array_data)) {
             return false;
         } else {
-            if (!array_key_exists("item",$array_data['items'])) {
-                return false;
+
+            if (array_key_exists("title",$array_data['items']['item'])) {
+                $item = $array_data['items']['item'];
+                if (!array_key_exists("title",$item)) {
+                    return false;
+                }
+                if (!array_key_exists("note",$item)) {
+                    return false;
+                }
+                if (!array_key_exists("quantity",$item)) {
+                    return false;
+                }
+                if (!array_key_exists("price",$item)) {
+                    return false;
+                }
+            } else {
+                foreach ($array_data['items']['item'] as $item) {
+                    if (!array_key_exists("title",$item)) {
+                        return false;
+                    }
+                    if (!array_key_exists("note",$item)) {
+                        return false;
+                    }
+                    if (!array_key_exists("quantity",$item)) {
+                        return false;
+                    }
+                    if (!array_key_exists("price",$item)) {
+                        return false;
+                    }
+                }
             } 
+
+
         }
 
         return true;

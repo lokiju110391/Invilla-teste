@@ -16,6 +16,12 @@
 			<quantity>745</quantity>
 			<price>123.45</price>
 		  </item>
+		  <item>
+			<title>Title 1</title>
+			<note>Note 1</note>
+			<quantity>745</quantity>
+			<price>123.45</price>
+		  </item>
 	  </items>
 	</shiporder>	
 </shiporders>

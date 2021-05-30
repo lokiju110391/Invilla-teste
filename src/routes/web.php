@@ -24,7 +24,7 @@ Route::get('/users' , [NavegationController::class,'users_page']);
 
 // Simple process route
 use App\Http\Controllers\ProcessController;
-Route::post('/save-file' , [ProcessController::class,'save_file']);
+Route::post('/save-file' , [ProcessController::class,'save_file2']);
 
 
 

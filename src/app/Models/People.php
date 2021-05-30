@@ -11,7 +11,9 @@ class People extends Model
 
     public static function verifyStructure($array_structure){
 
-        if (array_key_exists("person",$array_structure)) {
+        if (array_key_exists("personid",$array_structure["person"])) {
+            return People::verifyData($array_structure["person"]);
+        } else {
             foreach ($array_structure['person'] as $data) {
                 $status_data = People::verifyData($data);
                 if (!$status_data) {
@@ -19,10 +21,10 @@ class People extends Model
                 }
             }
             return true;
-        } else {
-            return false;
         }
-        
+    
+        return false;
+
     }    
 
     public static function verifyData($array_data){
