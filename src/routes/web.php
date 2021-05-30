@@ -13,8 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
 
-require __DIR__.'/auth.php';
+// Simple navegation routes
+use App\Http\Controllers\NavegationController;
+
+Route::get('/' , [NavegationController::class,'index_page']);
+Route::get('/people' , [NavegationController::class,'people_page']);
+Route::get('/shiporders' , [NavegationController::class,'shiporders_page']);
+Route::get('/users' , [NavegationController::class,'users_page']);
+
+// Simple process route
+use App\Http\Controllers\ProcessController;
+Route::get('/save-file' , [ProcessController::class,'save_file']);
+
+
+
