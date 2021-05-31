@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 // Simple navegation routes
 use App\Http\Controllers\NavegationController;
-
 Route::get('/' , [NavegationController::class,'index_page']);
 Route::get('/people' , [NavegationController::class,'people_page']);
 Route::get('/shiporders' , [NavegationController::class,'shiporders_page']);
