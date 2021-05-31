@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class ProcessController extends Controller
 {
     
-    public function save_file(Request $request) {
+    public function save_file_people(Request $request) {
         
         $data = $request->all();
 
         if (!array_key_exists("people_file_to_process",$data)) {
             
-            echo "Arquivo não enviado";
+            return redirect("/")->with('error', 'No file to read');  
 
         } else {
             
@@ -40,19 +40,22 @@ class ProcessController extends Controller
                     $people_file_to_process_array = json_decode($json, true); 
 
                 } else {
-                    echo "Failed loading XML 1";
+
+                    return redirect("/")->with('error', 'Failed loading XML');  
                     exit();
                 }                
 
             } catch (Exception $e) {
-                echo 'Failed loading File 1';
+
+                return redirect("/")->with('error', 'Failed loading XML');  
                 exit();
+
             }
 
         }
 
         $status_person = \App\Models\People::verifyStructure($people_file_to_process_array);
-
+        $inset_count = 0;
         if ($status_person) {
             // People
             foreach ($people_file_to_process_array as $persons) {
@@ -68,6 +71,7 @@ class ProcessController extends Controller
                     $new_person->personid   = $personid;
                     $new_person->personname = $personname;
                     $new_person->save();
+                    $inset_count++;
 
                     if (is_array($phones['phone'])) {
 
@@ -101,6 +105,7 @@ class ProcessController extends Controller
                         $new_person->personid   = $personid;
                         $new_person->personname = $personname;
                         $new_person->save();                    
+                        $inset_count++;
 
                         if (is_array($phones['phone'])) {
 
@@ -125,9 +130,14 @@ class ProcessController extends Controller
 
                 }
             }
+
+            $inset_count++;
+            return redirect("/")->with('success', 'New people recorded ' . $inset_count++); 
+
+
         } else {
 
-            echo "Arquivo não válido"; 
+            return redirect("/")->with('error', 'Invalid File'); 
 
         }
 
@@ -135,13 +145,13 @@ class ProcessController extends Controller
 
     }
 
-    public function save_file2(Request $request) {
+    public function save_file_orders(Request $request) {
         
         $data = $request->all();
 
         if (!array_key_exists("shiporders_file_to_process",$data)) {
             
-            echo "erro sem um dos aquivos";
+            return redirect("/")->with('error', 'No file to read');
 
         } else {
             
@@ -166,12 +176,12 @@ class ProcessController extends Controller
                     $shiporders_file_to_process_array = json_decode($json, true); 
 
                 } else {
-                    echo "Failed loading XML 2";
+                    return redirect("/")->with('error', 'Failed loading XML'); 
                     exit();
                 }                
 
             } catch (Exception $e) {
-                echo 'Failed loading File 2';
+                return redirect("/")->with('error', 'Failed loading XML'); 
                 exit();
             }
 
@@ -179,6 +189,7 @@ class ProcessController extends Controller
         }
 
         $status_shiporders = \App\Models\Shiporder::verifyStructure($shiporders_file_to_process_array);      
+        $inset_count = 0;
 
         if ($status_shiporders) {
 
@@ -204,6 +215,7 @@ class ProcessController extends Controller
                     $new_shiporder->shipto_city    = $shipto_city;
                     $new_shiporder->shipto_country = $shipto_country;
                     $new_shiporder->save();
+                    $inset_count++;
 
                     if (array_key_exists("title",$items['item'])) {
 
@@ -265,7 +277,8 @@ class ProcessController extends Controller
                         $new_shiporder->shipto_city    = $shipto_city;
                         $new_shiporder->shipto_country = $shipto_country;
                         $new_shiporder->save();
-
+                        $inset_count++;
+                        
                         if (array_key_exists("title",$items['item'])) {
 
                             $title    = $items['item']['title'];
@@ -310,8 +323,12 @@ class ProcessController extends Controller
 
             }
             
+            return redirect("/")->with('success', 'New orders recorded ' . $inset_count++); 
+
         } else {
-            echo "Arquivo não válido"; 
+
+            return redirect("/")->with('error', 'Invalid File'); 
+
         }
         
         // View ? 
