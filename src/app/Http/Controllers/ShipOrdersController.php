@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\People;
+use \App\Models\Shiporder;
 
 class ShipOrdersController extends Controller
 {

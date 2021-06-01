@@ -48,3 +48,10 @@ GET: Get people from given id
 ~~~~
 	http://localhost:8088/api/shiporders/{id}
 ~~~~
+
+
+### Unit Test ###
+
+~~~~
+	docker-compose exec php php /var/www/html/vendor/bin/phpunit
+~~~~
